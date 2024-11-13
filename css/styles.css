@@ -1,3 +1,53 @@
+* {
+  font-family: Menlo, Consolas, 'Courier New', Courier, monospace;
+}
+
+.inner {
+  width: 100%;
+  max-width: 1366px;
+  margin: 0 auto;
+  overflow-x: hidden;
+}
+
+.inner h1 {
+  font-size: 5.4vw;
+  margin: 12px;
+}
+
+.inner div.input {
+  margin: 6px 12px;
+}
+
+.inner input#button {
+  margin: 6px 12px;
+  font-size: 1em;
+}
+
+.inner p#output {
+  margin: 12px;
+}
+
+.inner p#output p {
+  margin: 4px 0 2px;
+}
+
+.inner p#output p.red {
+  color: #f00;
+}
+
+@media (orientation: landscape) {
+  .inner h1 {
+    font-size: 7.2vh;
+  }
+}
+
+@media (min-width: 768px) {
+  .inner h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+}
+
 .transparent {
   opacity: 0 !important;
 }
