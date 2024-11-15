@@ -1,2 +1,2 @@
-DON'T TRY TO UNDERSTAND WHAT THIS IS.
-IT'S JUST A INSIDE JOKE.
+No need to explain.
+It's all clear.

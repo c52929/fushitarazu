@@ -1,8 +1,10 @@
 'use strict';
 
-let n;
+let n,nInv;
 let seg=[6,2,5,5,4,5,6,3,7,6];
 let elm=["該当なし","H","He","Li","Be","B","C","N","O","F","Ne","Na","Mg","Al","Si","P","S","Cl","Ar","K","Ca"];
+let elmName=["NULL","Hydrogen","Helium","Lithium","Beryllium","Boron","Carbon","Nitrogen","Oxygen","Fluorine","Neon","Sodium","Magnesium","Aluminum","Silicon","Phosphorus","Sulfur","Chlorine","Argon","Potassium","Calcium"];
+
 let p=[2,3];
 let pMax=3;
 
@@ -17,6 +19,8 @@ document.getElementById("ans_button").addEventListener("click",()=>{
 
 let max,min;
 let from;
+let one,satisfy;
+let txt;
 document.getElementById("q_button").addEventListener("click",()=>{
 	max=Number(numMax.value);
 	min=Number(numMin.value);
@@ -31,46 +35,52 @@ document.getElementById("q_button").addEventListener("click",()=>{
 			}
 		}
 		if(from.length>0){
-			n=from[Math.floor(Math.random()*from.length)];
+			nInv=from[Math.floor(Math.random()*from.length)];
 		}else{
-			n=-1;
+			nInv=-1;
 		}
 	}else{
 		if(max>=min){
-			n=Math.floor(Math.random()*(max-min+1))+min;
+			nInv=Math.floor(Math.random()*(max-min+1))+min;
 		}else{
-			n=-1;
+			nInv=-1;
 		}
 	}
-	if(n==-1){
+	if(nInv==-1){
 		document.getElementById("q_output").innerHTML='<p class="red">Invalid Number Range</p>';
 		document.getElementById("reveal_button").classList.add("none");
 		document.getElementById("reveal_output").classList.add("none");
 	}else{
-		document.getElementById("q_output").innerHTML=fushitarazu(n,0);
+		txt=fushitarazu(nInv,0);
+		one=fushitarazu_simple(nInv);
+		satisfy=[];
+		if(onlyPrime.checked){
+			if(min<=2 && equivalentArr(one,fushitarazu_simple(2))){
+				satisfy.push(2);
+			}
+			for(let i=Math.max(min,5); i<=max; i++){
+				if(equivalentArr(one,fushitarazu_simple(i))){
+					satisfy.push(i);
+				}
+				i+=i%2;
+			}
+		}else{
+			for(let i=min; i<=max; i++){
+				if(equivalentArr(one,fushitarazu_simple(i))){
+					satisfy.push(i);
+				}
+			}
+		}
+		if(moreThan.checked && satisfy.length>1){
+			txt+='<p class="blue">[複数解注意報]</p>';
+		}
+		document.getElementById("q_output").innerHTML=txt;
 		document.getElementById("reveal_button").classList.remove("none");
 		document.getElementById("reveal_output").classList.add("none");
 	}
 })
 
 document.getElementById("reveal_button").addEventListener("click",()=>{
-	let one=fushitarazu_simple(n);
-	let satisfy=[];
-
-	if(onlyPrime.checked){
-		for(let i=min; i<=max; i++){
-			if(equivalentArr(one,fushitarazu_simple(i))){
-				satisfy.push(i);
-			}
-			i+=i%2;
-		}
-	}else{
-		for(let i=min; i<=max; i++){
-			if(equivalentArr(one,fushitarazu_simple(i))){
-				satisfy.push(i);
-			}
-		}
-	}
 	document.getElementById("reveal_output").classList.remove("none");
 	document.getElementById("reveal_output").innerHTML=`${satisfy}`;
 })
@@ -94,7 +104,7 @@ function fushitarazu(n,showBin){
 	txt+=`<p>${sum}本</p>`;
 
 	// mod 21の元素(0->該当なし)
-	txt+=`<p>${elm[n%21]}</p>`;
+	txt+=`<p>${elm[n%21]}: ${elmName[n%21]}</p>`;
 
 	if(showBin){
 		// binary
@@ -106,7 +116,7 @@ function fushitarazu(n,showBin){
 		if(n==1){
 			bin=`1${bin}`;
 		}
-		txt+=`<p>${bin}</p>`;
+		txt+=`<p>0b${bin}</p>`;
 	}
 
 	return txt;

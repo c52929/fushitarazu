@@ -30,6 +30,10 @@
   font-size: 1em;
 }
 
+.inner section input[type="submit"]:hover {
+  cursor: pointer;
+}
+
 .inner section p.output {
   margin: 8px 0;
 }
@@ -40,6 +44,10 @@
 
 .inner section p.output p.red {
   color: #f00;
+}
+
+.inner section p.output p.blue {
+  color: #00f;
 }
 
 @media (orientation: landscape) {

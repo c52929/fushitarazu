@@ -3,9 +3,10 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	<!-- <meta name="description" content="description"> -->
+	<meta name="description" content="No need to explain. It's all clear.">
 	<title>Fushitarazu</title>
-	<!-- <link rel="icon" href="#"> -->
+	<link rel="icon" href="icon.png">
+	<link rel="apple-touch-icon" href="apple-touch-icon.png">
 	<link rel="stylesheet" href="css/styles.min.css">
 </head>
 <body>
@@ -31,11 +32,15 @@
 			</div>
 			<div class="input">
 				<span>minimum:</span>
-				<input type="number" value="50" id="numMin">
+				<input type="number" value="10" id="numMin">
 			</div>
 			<div class="input">
-				<input type="checkbox" id="onlyPrime" checked>
+				<input type="checkbox" id="onlyPrime">
 				<span>あやまりなさい＆ありがとう限定</span>
+			</div>
+			<div class="input">
+				<input type="checkbox" id="moreThan" checked>
+				<span>[複数解注意報]を受信</span>
 			</div>
 			<input type="submit" value="guess" id="q_button">
 			<p class="output" id="q_output"></p>
