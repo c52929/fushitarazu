@@ -4,6 +4,7 @@ let n,nInv;
 let seg=[6,2,5,5,4,5,6,3,7,6];
 let elm=["該当なし","H","He","Li","Be","B","C","N","O","F","Ne","Na","Mg","Al","Si","P","S","Cl","Ar","K","Ca"];
 let elmName=["NULL","Hydrogen","Helium","Lithium","Beryllium","Boron","Carbon","Nitrogen","Oxygen","Fluorine","Neon","Sodium","Magnesium","Aluminum","Silicon","Phosphorus","Sulfur","Chlorine","Argon","Potassium","Calcium"];
+let notes=[0,"A","A#","B","C","C#","D","D#","E","F","F#","G","G#"];
 
 let p=[2,3];
 let pMax=3;
@@ -11,7 +12,7 @@ let pMax=3;
 document.getElementById("ans_button").addEventListener("click",()=>{
 	if(num1.value>0 && num2.value>0){
 		n=Number(num1.value)+Number(num2.value);
-		document.getElementById("ans_output").innerHTML=fushitarazu(n,1);
+		document.getElementById("ans_output").innerHTML=fushitarazu(n,1,1);
 	}else{
 		document.getElementById("ans_output").innerHTML='<p class="red">Invalid Number</p>';
 	}
@@ -21,6 +22,7 @@ let max,min;
 let from;
 let one,satisfy;
 let txt;
+let needsNote;
 document.getElementById("q_button").addEventListener("click",()=>{
 	max=Number(numMax.value);
 	min=Number(numMin.value);
@@ -51,22 +53,23 @@ document.getElementById("q_button").addEventListener("click",()=>{
 		document.getElementById("reveal_button").classList.add("none");
 		document.getElementById("reveal_output").classList.add("none");
 	}else{
-		txt=fushitarazu(nInv,0);
-		one=fushitarazu_simple(nInv);
+		needsNote=addNotes.checked;
+		txt=fushitarazu(nInv,0,needsNote);
+		one=fushitarazu_simple(nInv,needsNote);
 		satisfy=[];
 		if(onlyPrime.checked){
-			if(min<=2 && equivalentArr(one,fushitarazu_simple(2))){
+			if(min<=2 && equivalentArr(one,fushitarazu_simple(2,needsNote))){
 				satisfy.push(2);
 			}
 			for(let i=Math.max(min,5); i<=max; i++){
-				if(equivalentArr(one,fushitarazu_simple(i))){
+				if(equivalentArr(one,fushitarazu_simple(i,needsNote))){
 					satisfy.push(i);
 				}
 				i+=i%2;
 			}
 		}else{
 			for(let i=min; i<=max; i++){
-				if(equivalentArr(one,fushitarazu_simple(i))){
+				if(equivalentArr(one,fushitarazu_simple(i,needsNote))){
 					satisfy.push(i);
 				}
 			}
@@ -85,7 +88,7 @@ document.getElementById("reveal_button").addEventListener("click",()=>{
 	document.getElementById("reveal_output").innerHTML=`${satisfy}`;
 })
 
-function fushitarazu(n,showBin){
+function fushitarazu(n,showBin,needsNote){
 	// 3の倍数
 	let txt=["","<p>あやまりなさい</p>","<p>あやまりなさい</p>"][n%3];
 	
@@ -108,15 +111,30 @@ function fushitarazu(n,showBin){
 
 	if(showBin){
 		// binary
+		let m=n;
 		let bin="";
-		while(n>1){
-			bin=`${n%2}${bin}`;
-			n=Math.floor(n/2);
+		while(m>1){
+			bin=`${m%2}${bin}`;
+			m=Math.floor(m/2);
 		}
-		if(n==1){
+		if(m==1){
 			bin=`1${bin}`;
 		}
 		txt+=`<p>0b${bin}</p>`;
+	}
+
+	// 音階
+	if(needsNote){
+		let l;
+		let s=n;
+		while(s==0 || s>12){
+			l=s.toString();
+			s=0;
+			for(let i=0; i<l.length; i++){
+				s+=Number(l.charAt(i));
+			}
+		}
+		txt+=`<p>note: ${notes[s]}</p>`;
 	}
 
 	return txt;
@@ -143,7 +161,7 @@ function isPrime(n){
 	return Number(p.indexOf(n)>=0);
 }
 
-function fushitarazu_simple(n){
+function fushitarazu_simple(n,needsNote){
 	// 3の倍数、素数判定、mod 6
 	let r=[Number(n%3>0),isPrime(n),n%6];
 
@@ -157,6 +175,20 @@ function fushitarazu_simple(n){
 
 	// mod 21
 	r.push(n%21);
+
+	// mod 12
+	if(needsNote){
+		let l;
+		let s=n;
+		while(s==0 || s>12){
+			l=s.toString();
+			s=0;
+			for(let i=0; i<l.length; i++){
+				s+=Number(l.charAt(i));
+			}
+		}
+		r.push(s);
+	}
 
 	return r;
 }

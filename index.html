@@ -34,18 +34,22 @@
 				<span>minimum:</span>
 				<input type="number" value="10" id="numMin">
 			</div>
-			<div class="input">
+			<div class="input check">
 				<input type="checkbox" id="onlyPrime">
 				<span>あやまりなさい＆ありがとう限定</span>
 			</div>
-			<div class="input">
+			<div class="input check">
 				<input type="checkbox" id="moreThan" checked>
 				<span>[複数解注意報]を受信</span>
+			</div>
+			<div class="input check">
+				<input type="checkbox" id="addNotes" checked>
+				<span>音階</span>
 			</div>
 			<input type="submit" value="guess" id="q_button">
 			<p class="output" id="q_output"></p>
 			<input type="submit" value="reveal" id="reveal_button" class="none">
-			<p class="output" id="reveal_output"></p>
+			<p class="output code none" id="reveal_output"></p>
 		</section>
 	</div>
 	<script src="main.js"></script>
